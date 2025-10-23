@@ -1,44 +1,47 @@
-import { writeFile } from 'fs';
-import {readFile} from 'fs/promises'
+import { writeFile } from 'fs/promises'
+import { randomUUID } from 'crypto';
 
-import { readTodos } from "./exercice1/utils/readTodos"
+import readTodo from "../utils/readTodos.js"
 import { error } from 'console';
 import { text } from 'express';
 
-export const createTodo = (req,res) =>{
-    const {text, completed} = req.body
-    const id = crypto.randomUUID()
-    
-    if(!completed){
-        completed = false
-    }
+export const createTodo = async (req,res) =>{
+    try {
+        const {text, completed = false} = req.body //completed false PAR DEFAUT
 
-    if (!text){
-        return res(400).send({error: 'Invalid body'})
-    }
+        if (!text.trim() || typeof completed !== 'boolean'){
+            return res.status(400).send({
+                error: 'Invalid body'
+            })
+        }
 
-    todos = readTodos()
-    if(todos instanceof Array) {
-        todos.push([id,text,completed])
+        const todos = await readTodo()
+        todos.push({
+            id: crypto.randomUUID(),
+            text :text.trim(),
+            completed : completed
+        })
+
+        await writeFile('exercice1/todos.json',JSON.stringify(todos))
+        return res.status(201).send({
+            message: 'ToDo created'
+        })
+        
+    } catch(error) {
+        console.log(error)
+        res.status(500).send({
+            error: 'Internal server error'
+        })
     }
-    saveTodos("../todos.json")
-    return res(201).send({message: 'ToDo created'})
 }
-
-
-async function saveTodos(file) {
-    const json = JSON.stringify(todos,null, 2);
-    await writeFile(file,json,'utf8',()=> console.log("saved !"))
-}
-
 
 export const getTodo = (req,res) => {
     const {id} = req.params
-    todo = readTodos.find(randomUUID == id)
+    todo = readTodo.find(randomUUID == id)
     if(!todo){
-        return res(404).send({error: "Not found"})
+        return res.status(404).send({error: "Not found"})
     }
-    return res(200).send({todo})
+    return res.status(200).send({todo})
 }
 
 

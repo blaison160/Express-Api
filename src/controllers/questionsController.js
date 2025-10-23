@@ -12,10 +12,10 @@ export const createQuestion = (req,res) => {
     const {question, answear} = req.body
 
     if (!question || !answear){
-        return res(400).send({error: 'Question or answear undefined'})
+        return res.status(400).send({error: 'Question or answear undefined'})
     }
 
-    return res(201).send({message: 'Question created'})
+    return res.status(201).send({message: 'Question created'})
 }
 
 export const deleteQuestion = (req,res) => {

@@ -1,8 +1,8 @@
 import { readFile } from 'fs/promises'
 
-export default readTodos = async ()=>{
+const readTodo = async ()=>{
     try {
-        const data = await readFile('./exercice1/todos.json','utf-8')
+        const data = await readFile('exercice1/todos.json','utf-8')
         return JSON.parse(data)
     } catch (error){
         if(error.code ==="ENOENT"){
@@ -12,3 +12,5 @@ export default readTodos = async ()=>{
         }
     }
 }
+
+export default readTodo
