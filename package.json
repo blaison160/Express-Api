@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.js",
-    "exercice1": "nodemon exercice1/server.js"
+    "exercice1": "nodemon exercice1/server.js",
+    "db:push": "drizzle-kit push",
+    "db:studio":"drizzle-kit studio",
+    "db:seed":"node src/db/seed.js"
   },
   "keywords": [],
   "author": "",
