@@ -4,11 +4,11 @@ import usersRouter from './routers/usersRouter.js'
 import authRouter from "./routers/authRouter.js"
 import logger from './middleware/logger.js'
 
+const PORT = process.env.PORT || 3000
 const app = express()
 
 app.use(express.json())
 app.use(logger)
-const PORT = process.env.PORT || 3000
 
 app.use('/questions',questionsRouter)
 app.use('/users',usersRouter)
